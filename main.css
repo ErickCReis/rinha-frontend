@@ -1,6 +1,32 @@
+html,
+body,
+div,
+span,
+h1,
+p,
+pre,
+ol,
+ul,
+li,
+header,
+main {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
 html {
   font-family: "Inter", sans-serif;
 }
+
+ol,
+ul {
+  list-style: none;
+}
+
 main {
   min-height: 100vh;
   margin: auto 1.5rem;
@@ -105,16 +131,17 @@ span.key {
   padding-right: 0.5rem;
 }
 
-li.array::after {
-  content: "]";
-  color: #f2cab8;
-}
-
-li.array > span.key::after {
+span.key:has(+ ul.array)::after {
   content: " [";
   color: #f2cab8;
 }
 
-li.array > ul > li > span.key {
+li:has(> ul.array)::after {
+  content: "]";
+  color: #f2cab8;
+}
+
+ul.array > li > span.key,
+ul.array > li > li > span.key {
   color: #bfbfbf;
 }

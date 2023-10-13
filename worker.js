@@ -56,44 +56,27 @@ function getInRange(json, keyName) {
 
   const keys = Object.keys(json);
   const isArray = Array.isArray(json);
-  const croppedJsonData = isArray ? [] : {};
+  const croppedJsonData = {};
 
   for (let key of keys.slice(start, end)) {
     const value = json[key];
+    const nextKey = keyName + ":" + key;
+    key = isArray ? `isArray_${key}` : key;
 
     if (typeof value === "object" && value !== null) {
       const keysLength = Object.keys(value).length;
-      const newKeyName = keyName + ":" + key;
 
-      const data = getInRange(value, newKeyName);
-      if (isArray) {
-        croppedJsonData.push(data);
-      } else {
-        croppedJsonData[key] = data;
-      }
-
+      croppedJsonData[key] = getInRange(value, nextKey);
       if (keysLength > objects_per_page) {
-        if (isArray) {
-          croppedJsonData.push("addload_" + newKeyName);
-        } else {
-          croppedJsonData[key]["..."] = newKeyName;
-        }
+        croppedJsonData[key]["..."] = nextKey;
       }
     } else {
-      if (isArray) {
-        croppedJsonData.push(value);
-      } else {
-        croppedJsonData[key] = value;
-      }
+      croppedJsonData[key] = value;
     }
   }
 
   if (keys.length > end) {
-    if (isArray) {
-      croppedJsonData.push("addload_" + keyName);
-    } else {
-      croppedJsonData["..."] = keyName;
-    }
+    croppedJsonData["..."] = keyName;
   }
 
   return croppedJsonData;

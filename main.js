@@ -87,12 +87,16 @@ function createStructure(json) {
 
   for (let key of keys) {
     const value = json[key];
+    let isArray = false;
+    if (key.startsWith("isArray_")) {
+      isArray = true;
+      key = key.slice(8);
+    }
+
     const li = document.createElement("li");
-    if (
-      key === "..." ||
-      (typeof value === "string" && value.startsWith("addload_"))
-    ) {
-      li.appendChild(createLoadMoreRef(value.slice(8)));
+
+    if (key === "...") {
+      li.appendChild(createLoadMoreRef(value));
       ul.appendChild(li);
       continue;
     }
@@ -121,8 +125,8 @@ function createStructure(json) {
       li.appendChild(createStructure(value));
     }
 
-    if (Array.isArray(value)) {
-      li.classList.add("array");
+    if (isArray) {
+      ul.classList.add("array");
     }
     ul.appendChild(li);
   }
