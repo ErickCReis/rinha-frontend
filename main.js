@@ -2,12 +2,11 @@ const homePage = document.getElementById("home_page");
 const resultPage = document.getElementById("result_page");
 
 const input = document.getElementById("input");
-const loading = document.getElementById("loading");
 const error = document.getElementById("error");
 
+const back = document.getElementById("back");
 const title = document.getElementById("title");
 const result = document.getElementById("result");
-const more = document.getElementById("more");
 
 const worker = new Worker("./worker.js");
 worker.addEventListener("message", ({ data }) => {
@@ -32,11 +31,11 @@ function handleMessage(data) {
     return;
   }
 
-  const target = result.querySelector(
-    `[data-key-name="${keyName}"]`
-  )?.parentElement;
-
+  let target = document.getElementById(keyName);
   if (!target) return;
+
+  intersectorObserver.unobserve(target);
+  target = target.parentElement;
 
   target.innerHTML = "";
   const res = createStructure(json);
@@ -57,15 +56,29 @@ input.addEventListener("change", async (e) => {
   });
 });
 
-const intersectorObserver = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) {
-    worker.postMessage({
-      type: "more",
-    });
-  }
+back.addEventListener("click", () => {
+  homePage.style.display = "flex";
+  resultPage.style.display = "none";
+
+  result.innerHTML = "";
+  input.value = "";
+  error.innerHTML = "&nbsp;";
+
+  worker.postMessage({
+    type: "reset",
+  });
 });
 
-intersectorObserver.observe(more);
+const intersectorObserver = new IntersectionObserver((entries) => {
+  for (let entry of entries) {
+    if (entry.isIntersecting || entry.isVisible) {
+      worker.postMessage({
+        type: "more",
+        keyName: entry.target.id,
+      });
+    }
+  }
+});
 
 function createStructure(json) {
   const keys = Object.keys(json);
@@ -73,21 +86,23 @@ function createStructure(json) {
   const ul = document.createElement("ul");
 
   for (let key of keys) {
+    const value = json[key];
     const li = document.createElement("li");
+    if (
+      key === "..." ||
+      (typeof value === "string" && value.startsWith("addload_"))
+    ) {
+      li.appendChild(createLoadMoreRef(value.slice(8)));
+      ul.appendChild(li);
+      continue;
+    }
+
     const span = document.createElement("span");
 
     span.classList.add("key");
     span.textContent = key + ":";
 
     li.appendChild(span);
-
-    const value = json[key];
-
-    if (key === "...") {
-      li.appendChild(createLoadMoreButton(value));
-      ul.appendChild(li);
-      continue;
-    }
 
     if (value === null || typeof value !== "object") {
       const span = document.createElement("span");
@@ -103,31 +118,23 @@ function createStructure(json) {
 
       li.appendChild(span);
     } else {
-      if (Array.isArray(value)) {
-        li.classList.add("array");
-      }
-
       li.appendChild(createStructure(value));
     }
 
+    if (Array.isArray(value)) {
+      li.classList.add("array");
+    }
     ul.appendChild(li);
   }
 
   return ul;
 }
 
-function createLoadMoreButton(keyName) {
-  const button = document.createElement("button");
-  button.textContent = keyName;
-  button.dataset.keyName = keyName;
-  button.addEventListener("click", (e) => {
-    const keyName = e.target.dataset.keyName;
+function createLoadMoreRef(keyName) {
+  const div = document.createElement("div");
+  div.id = keyName;
 
-    worker.postMessage({
-      type: "more",
-      keyName,
-    });
-  });
+  intersectorObserver.observe(div);
 
-  return button;
+  return div;
 }

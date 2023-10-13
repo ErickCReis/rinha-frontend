@@ -6,6 +6,17 @@ main {
   margin: auto 1.5rem;
 }
 
+button {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #000;
+  border-radius: 0.3125rem;
+  opacity: 0.7;
+  background: linear-gradient(180deg, #e4e4e4 0%, #f7f7f7 100%);
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
 #home_page {
   min-height: 100vh;
 
@@ -31,13 +42,6 @@ main {
 
 #home_page > button {
   padding: 0.375rem 0.75rem;
-  border: 1px solid #000;
-  border-radius: 0.3125rem;
-  opacity: 0.7;
-  background: linear-gradient(180deg, #e4e4e4 0%, #f7f7f7 100%);
-  font-family: inherit;
-  font-size: 1rem;
-  cursor: pointer;
 }
 
 #home_page > button:hover {
@@ -57,10 +61,24 @@ main {
   flex-direction: column;
 }
 
-#result_page > h1 {
+#result_page > header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.625rem;
+}
+
+#result_page > header > button {
+  padding: 0.25rem;
+}
+
+#result_page > header > button:hover {
+  opacity: 1;
+}
+
+#result_page > header > h1 {
   font-size: 2rem;
   font-weight: 700;
-  padding-bottom: 0.625rem;
 }
 
 #result_page > pre {
