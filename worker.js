@@ -5,8 +5,6 @@ let objects_pages = {};
 const objects_per_page = 20;
 
 onmessage = ({ data }) => {
-  console.log("worker", data, objects_pages);
-
   if (data.type === "load") {
     load(data.file);
   }
@@ -57,10 +55,11 @@ function getInRange(json, keyName) {
 
   let start = 0;
   let end = keys.length;
-  if (keys.length > objects_per_page) {
+
+  if (end > objects_per_page) {
     if (!objects_pages[keyName]) objects_pages[keyName] = 0;
 
-    start = ++objects_pages[keyName] * objects_per_page;
+    start = objects_pages[keyName]++ * objects_per_page;
     end = start + objects_per_page;
   }
 
