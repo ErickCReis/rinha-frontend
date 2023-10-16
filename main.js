@@ -34,15 +34,15 @@ function handleMessage(data) {
   let target = document.getElementById(keyName);
   if (!target) return;
 
+  const parent = target.parentElement;
+
   intersectorObserver.unobserve(target);
-  target = target.parentElement;
+  target.remove();
 
-  target.innerHTML = "";
   const res = createStructure(json);
-  const resCount = res.childElementCount;
 
-  for (let i = 0; i < resCount; i++) {
-    target.appendChild(res.children.item(0));
+  for (let _ of res.children) {
+    parent.appendChild(res.children[0]);
   }
 }
 
@@ -93,14 +93,12 @@ function createStructure(json) {
       key = key.slice(8);
     }
 
-    const li = document.createElement("li");
-
     if (key === "...") {
-      li.appendChild(createLoadMoreRef(value));
-      ul.appendChild(li);
+      ul.appendChild(createLoadMoreRef(value));
       continue;
     }
 
+    const li = document.createElement("li");
     const span = document.createElement("span");
 
     span.classList.add("key");

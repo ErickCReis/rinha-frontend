@@ -5,6 +5,8 @@ let objects_pages = {};
 const objects_per_page = 20;
 
 onmessage = ({ data }) => {
+  console.log("worker", data, objects_pages);
+
   if (data.type === "load") {
     load(data.file);
   }
@@ -49,14 +51,18 @@ function next(keyName = "root") {
 }
 
 function getInRange(json, keyName) {
-  if (!objects_pages[keyName]) objects_pages[keyName] = 0;
-
-  const start = objects_pages[keyName] * objects_per_page;
-  const end = ++objects_pages[keyName] * objects_per_page;
-
   const keys = Object.keys(json);
   const isArray = Array.isArray(json);
   const croppedJsonData = {};
+
+  let start = 0;
+  let end = keys.length;
+  if (keys.length > objects_per_page) {
+    if (!objects_pages[keyName]) objects_pages[keyName] = 0;
+
+    start = ++objects_pages[keyName] * objects_per_page;
+    end = start + objects_per_page;
+  }
 
   for (let key of keys.slice(start, end)) {
     const value = json[key];
@@ -64,12 +70,7 @@ function getInRange(json, keyName) {
     key = isArray ? `isArray_${key}` : key;
 
     if (typeof value === "object" && value !== null) {
-      const keysLength = Object.keys(value).length;
-
       croppedJsonData[key] = getInRange(value, nextKey);
-      if (keysLength > objects_per_page) {
-        croppedJsonData[key]["..."] = nextKey;
-      }
     } else {
       croppedJsonData[key] = value;
     }
