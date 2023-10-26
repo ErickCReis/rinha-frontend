@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/images/logo.ico" sizes="any">
+    <meta name="description" content="Simple JSON Viewer that runs completely on-client. No data exchange" />
     <title>JSON Tree Viewer</title>
     <link rel="stylesheet" href="./main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,6 +15,14 @@
       rel="preload"
       as="style"
     />
+    <link rel="manifest" href="manifest.json" />
+<!-- ios support -->
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-256x256.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-384x384.png" />
+    <link rel="apple-touch-icon" href="images/icons/icon-512x512.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
+    <meta name="theme-color" content="#db4938" />
     <script defer src="./main.js" type="module"></script>
   </head>
   <body>
