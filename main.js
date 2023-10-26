@@ -2,6 +2,8 @@ const homePage = document.getElementById("home_page");
 const resultPage = document.getElementById("result_page");
 
 const input = document.getElementById("input");
+const inputText = document.getElementById("input_text");
+const imputLoading = document.getElementById("input_loading");
 const error = document.getElementById("error");
 
 const back = document.getElementById("back");
@@ -17,6 +19,8 @@ function handleMessage(data) {
   const { isValid, json, fileName, keyName } = data;
 
   if (!isValid) {
+    inputText.style.display = "block";
+    imputLoading.style.display = "none";
     error.textContent = "Invalid file. Please load a valid JSON file.";
     return;
   }
@@ -50,6 +54,9 @@ input.addEventListener("change", async (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
+  inputText.style.display = "none";
+  imputLoading.style.display = "block";
+
   worker.postMessage({
     type: "load",
     file,
@@ -62,6 +69,8 @@ back.addEventListener("click", () => {
 
   result.innerHTML = "";
   input.value = "";
+  inputText.style.display = "block";
+  imputLoading.style.display = "none";
   error.innerHTML = "&nbsp;";
 
   worker.postMessage({

@@ -77,6 +77,19 @@ button {
   opacity: 1;
 }
 
+#home_page > button > svg {
+  animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
 #home_page > #error {
   font-size: 1rem;
   color: #bf0e0e;

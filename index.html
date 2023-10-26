@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/images/logo.ico" sizes="any">
-    <meta name="description" content="Simple JSON Viewer that runs completely on-client. No data exchange" />
+    <link rel="icon" href="/images/logo.ico" sizes="any" />
+    <meta
+      name="description"
+      content="Simple JSON Viewer that runs completely on-client. No data exchange"
+    />
     <title>JSON Tree Viewer</title>
     <link rel="stylesheet" href="./main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,7 +19,7 @@
       as="style"
     />
     <link rel="manifest" href="manifest.json" />
-<!-- ios support -->
+
     <link rel="apple-touch-icon" href="images/icons/icon-192x192.png" />
     <link rel="apple-touch-icon" href="images/icons/icon-256x256.png" />
     <link rel="apple-touch-icon" href="images/icons/icon-384x384.png" />
@@ -33,7 +36,21 @@
           Simple JSON Viewer that runs completely on-client. No data exchange
         </p>
         <button onclick="input.click()">
-          Load JSON
+          <div id="input_text">Load JSON</div>
+          <svg
+            id="input_loading"
+            style="display: none"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
           <input id="input" type="file" style="display: none" />
         </button>
         <p id="error">&nbsp;</p>
