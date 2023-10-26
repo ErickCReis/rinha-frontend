@@ -2,8 +2,8 @@
   "theme_color": "#4E9590",
   "background_color": "#ffffff",
   "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/rinha-frontend/",
+  "start_url": "/rinha-frontend/",
   "name": "JSON Tree Viewer",
   "short_name": "JSON Viewer",
   "icons": [
